@@ -1,7 +1,7 @@
 class Devise::CheckgaController < Devise::SessionsController
   prepend_before_filter :require_no_authentication, :only => [ :show, :update ]
   include Devise::Controllers::Helpers
-  
+
   def show
     @tmpid = params[:id]
     if @tmpid.nil?
@@ -10,7 +10,7 @@ class Devise::CheckgaController < Devise::SessionsController
       render :show
     end
   end
-  
+
   def update
     resource = resource_class.find_by_gauth_tmp(params[resource_name]['tmpid'])
 
@@ -21,7 +21,9 @@ class Devise::CheckgaController < Devise::SessionsController
         sign_in(resource_name,resource)
         respond_with resource, :location => redirect_location(resource_name, resource)
       else
-        redirect_to :root
+        @tmpid = params[resource_name]['tmpid']
+        flash[:alert] = "Authentication failed."
+        render :show
       end
 
     else

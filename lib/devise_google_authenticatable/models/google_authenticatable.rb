@@ -52,10 +52,22 @@ module Devise # :nodoc:
           end
         end
 
+        def google_authenticator_qrcode_url
+          return unless gauth_secret?
+
+          data = Rack::Utils.escape "otpauth://totp/#{ga_username_from_email(email)}@#{Devise.http_authentication_realm || Rails.application.class.parent_name}?secret=#{gauth_secret}"
+
+          "https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=#{data}"
+        end
+
         private
 
         def assign_auth_secret
           self.gauth_secret = ROTP::Base32.random_base32
+        end
+
+        def ga_username_from_email(email)
+          (/^(.*)@/).match(email)[1]
         end
 
       end
