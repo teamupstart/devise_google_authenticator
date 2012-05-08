@@ -18,13 +18,16 @@ module Devise # :nodoc:
         def get_qr
           self.gauth_secret
         end
-        
+
         def set_gauth_enabled(param)
           self.update_without_password(param)
         end
 
         def assign_tmp
-          self.update_attributes(:gauth_tmp => ROTP::Base32.random_base32, :gauth_tmp_datetime => DateTime.now)
+          self.gauth_tmp = ROTP::Base32.random_base32
+          self.gauth_tmp_datetime = DateTime.now
+          self.save
+
           self.gauth_tmp
         end
 
@@ -40,7 +43,7 @@ module Devise # :nodoc:
               valid_vals << ROTP::TOTP.new(self.get_qr).at(Time.now.ago(30*cc))
               valid_vals << ROTP::TOTP.new(self.get_qr).at(Time.now.in(30*cc))
             end
-            
+
             if valid_vals.include?(token.to_i)
               return true
             else
