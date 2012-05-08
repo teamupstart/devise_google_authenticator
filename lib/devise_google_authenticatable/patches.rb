@@ -5,7 +5,7 @@ module DeviseGoogleAuthenticator
 
     class << self
       def apply
-        Devise::RegistrationsController.send(:include, Patches::DisplayQR)
+        # Devise::RegistrationsController.send(:include, Patches::DisplayQR)
         Devise::SessionsController.send(:include, Patches::CheckGA)
       end
     end
