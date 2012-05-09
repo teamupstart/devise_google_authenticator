@@ -30,17 +30,17 @@ class GoogleAuthenticatableTest < ActiveSupport::TestCase
 	end
 
 	test 'updating the gauth_tmp key' do
-		User.find(1).assign_tmp
-		
+		User.find(1).assign_gauth_tmp
+
 		assert_not_nil User.find(1).gauth_tmp
 		assert_not_nil User.find(1).gauth_tmp_datetime
-		
+
 		sleep(1)
-		
+
 		old_tmp = User.find(1).gauth_tmp
 		old_dt = User.find(1).gauth_tmp_datetime
-		
-		User.find(1).assign_tmp
+
+		User.find(1).assign_gauth_tmp
 
 		assert_not_equal old_tmp, User.find(1).gauth_tmp
 		assert_not_equal old_dt, User.find(1).gauth_tmp_datetime
@@ -55,7 +55,7 @@ class GoogleAuthenticatableTest < ActiveSupport::TestCase
 		assert !User.find(1).validate_token('1')
 		assert !User.find(1).validate_token(ROTP::TOTP.new(User.find(1).get_qr).at(Time.now))
 
-		User.find(1).assign_tmp
+		User.find(1).assign_gauth_tmp
 
 		assert !User.find(1).validate_token('1')
 		assert User.find(1).validate_token(ROTP::TOTP.new(User.find(1).get_qr).at(Time.now))

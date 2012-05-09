@@ -11,20 +11,24 @@ module Devise # :nodoc:
 
 	mattr_accessor :ga_timedrift
 	@@ga_timedrift = 3
+
+  mattr_accessor :remember_gauth_for
+  @@remember_gauth_for = 30.days
 end
 
-# a security extension for devise
-module DeviseGoogleAuthenticator
+module DeviseGoogleAuthenticator # :nodoc:
   autoload :Schema, 'devise_google_authenticatable/schema'
   autoload :Patches, 'devise_google_authenticatable/patches'
 end
-
-
 
 require 'devise_google_authenticatable/routes'
 require 'devise_google_authenticatable/rails'
 require 'devise_google_authenticatable/orm/active_record'
 require 'devise_google_authenticatable/controllers/helpers'
+
 ActionView::Base.send :include, DeviseGoogleAuthenticator::Controllers::Helpers
 
-Devise.add_module :google_authenticatable, :controller => :google_authenticatable, :model => 'devise_google_authenticatable/models/google_authenticatable', :route => :displayqr
+Devise.add_module :google_authenticatable,
+  :controller => :google_authenticatable,
+  :model => 'devise_google_authenticatable/models/google_authenticatable',
+  :route => :google_auth

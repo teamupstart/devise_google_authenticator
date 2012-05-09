@@ -1,5 +1,4 @@
 module DeviseGoogleAuthenticator
-  # add schema helper for migrations
   module Schema
     # Add gauth_secret columns in the resource's database tables
     #
@@ -21,7 +20,7 @@ module DeviseGoogleAuthenticator
     def gauth_secret
       apply_devise_schema :gauth_secret, String
     end
-    
+
     def gauth_enabled
       apply_devise_schema :gauth_enabled, Integer, {:default => 0}
     end
@@ -33,6 +32,5 @@ module DeviseGoogleAuthenticator
     def gauth_tmp_datetime
         apply_devise_schema :gauth_tmp_datetime, Datetime
     end
-
   end
 end

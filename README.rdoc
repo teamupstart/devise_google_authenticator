@@ -1,8 +1,10 @@
 This fork:
 
 * Updates some syntax (e.g. using `after_sign_in_path` instead of `redirect_location`)
-* Doesn't redirect to the QR code display page after creation -- assumes that the user will set it up later.
+* Doesn't redirect to the QR code display page after creation -- assumes that the user will set it up later. Disables the QR code controller entirely -- use the helper to show the QR code on your setup page.
 * Moves the QR code URL logic into the model, so that you can pass it down via JSON or whatever.
+* Shows an "Authentication failed." message if the token is incorrect rather than redirecting to root.
+* Adds the ability to remember a computer by setting a `remember_gauth` cookie.
 
 ---
 
