@@ -4,7 +4,8 @@ This fork:
 * Doesn't redirect to the QR code display page after creation -- assumes that the user will set it up later. Disables the QR code controller entirely -- use the helper to show the QR code on your setup page.
 * Moves the QR code URL logic into the model, so that you can pass it down via JSON or whatever.
 * Shows an "Authentication failed." message if the token is incorrect rather than redirecting to root.
-* Adds the ability to remember a computer by setting a `remember_gauth` cookie.
+* Adds the ability to remember a computer by setting a secure cookie. The cookie's expiry date can be changed using `Devise.remember_gauth_for` (default: 30.days).
+* Passes the `gauth_tmp` ID using the session rather than a param, for prettier URLs and harder hijacking.
 
 ---
 
