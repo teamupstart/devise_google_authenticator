@@ -1,3 +1,11 @@
+This fork:
+
+* Updates some syntax (e.g. using `after_sign_in_path` instead of `redirect_location`)
+* Doesn't redirect to the QR code display page after creation -- assumes that the user will set it up later.
+* Moves the QR code URL logic into the model, so that you can pass it down via JSON or whatever.
+
+---
+
 = Devise Google Authenticator
 
 This is a devise[https://github.com/plataformatec/devise] extension to allow your app to utilise Google Authenticator[http://code.google.com/p/google-authenticator/] for Time-based One Time Passwords (TOTP).
@@ -84,7 +92,7 @@ This extension would not exist without the following other projects and associat
 
 
 == Contributing to devise_google_authenticator
- 
+
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
 * Fork the project
