@@ -34,7 +34,6 @@ module Devise # :nodoc:
       def assign_gauth_tmp
         self.gauth_tmp = ROTP::Base32.random_base32
         self.gauth_tmp_datetime = DateTime.now
-
         save
 
         gauth_tmp

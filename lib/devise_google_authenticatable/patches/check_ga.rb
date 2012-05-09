@@ -1,4 +1,5 @@
 require 'active_support/concern'
+require 'digest/sha2'
 
 # Patch Sessions controller to require a token, if applicable.
 module DeviseGoogleAuthenticator::Patches
@@ -19,17 +20,19 @@ module DeviseGoogleAuthenticator::Patches
         # Resource has G2FA enabled
         if gauth_required?(resource)
           # Assign a temporary key and fetch it
-          tmpid = resource.assign_gauth_tmp
+          session[:gauth_tmp_id] = resource.assign_gauth_tmp
 
           # Log the user out
           warden.logout
 
           # Redirect to GA controller to request the token
-          checkga_url = send("#{scope}_checkga_url", :id => tmpid)
-          respond_with resource, :location => checkga_url
+          respond_with resource, :location => send("#{scope}_checkga_url")
 
         # G2FA not enabled - sign in normally
         else
+          # clear any previous temporary keys
+          session[:gauth_tmp_id] = nil
+
           set_flash_message(:notice, :signed_in) if is_navigational_format?
           sign_in(resource_name, resource)
           respond_with resource, :location => after_sign_in_path_for(resource)
@@ -46,7 +49,10 @@ module DeviseGoogleAuthenticator::Patches
     end
 
     def gauth_remembered?(resource)
-      cookies.signed["#{resource.class.name}-#{resource.id}"]
+      remember_key = Digest::SHA2.new << "#{resource_name}-#{resource.id}"
+      remember_value = Digest::SHA2.new << resource.gauth_secret
+
+      cookies.signed[remember_key.to_s] == remember_value.to_s
     end
   end
 end
