@@ -4,10 +4,10 @@ class Devise::CheckgaController < Devise::SessionsController
   include Devise::Controllers::Helpers
 
   prepend_before_filter :require_no_authentication, :only => [:show, :update]
-  before_filter :set_tmp_id
+  before_filter :set_gauth_tmp
 
   def show
-    if @tmpid.nil?
+    if @gauth_tmp.nil?
       redirect_to :root
     else
       render :show
@@ -15,11 +15,12 @@ class Devise::CheckgaController < Devise::SessionsController
   end
 
   def update
-    resource = resource_class.find_by_gauth_tmp @tmp_id
-    token = params[resource_name]['token']
+    resource = resource_class.find_by_gauth_tmp @gauth_tmp
 
-    # Redirect to root
-    redirect_to :root if resource.nil?
+    # Redirect to root if gauth_tmp can't be found
+    redirect_to :root and return if resource.nil?
+
+    token = params[resource_name]['token']
 
     # Sign in using Gauth token
     if resource.validate_token(token.to_i)
@@ -40,8 +41,8 @@ class Devise::CheckgaController < Devise::SessionsController
 
   private
 
-  def set_tmp_id
-    @tmpid = session[:gauth_tmp_id]
+  def set_gauth_tmp
+    @gauth_tmp = session[:gauth_tmp]
   end
 
   # Set a remember me token if params[:remember_me] is not nil or false.
@@ -51,7 +52,7 @@ class Devise::CheckgaController < Devise::SessionsController
 
     cookies.signed[remember_key.to_s] = {
       value: remember_value.to_s,
-      expires_at: Devise.remember_gauth_for.from_now
+      expires: Devise.remember_gauth_for.from_now
     }
   end
 end

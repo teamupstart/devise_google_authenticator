@@ -19,11 +19,14 @@ module DeviseGoogleAuthenticator::Patches
 
         # Resource has G2FA enabled
         if gauth_required?(resource)
-          # Assign a temporary key and fetch it
-          session[:gauth_tmp_id] = resource.assign_gauth_tmp
-
           # Log the user out
           warden.logout
+
+          # Assign a temporary key and fetch it
+          session[:gauth_tmp] = resource.assign_gauth_tmp
+
+          ap "SESSION"
+          ap session.inspect
 
           # Redirect to GA controller to request the token
           respond_with resource, :location => send("#{scope}_checkga_url")
@@ -31,7 +34,7 @@ module DeviseGoogleAuthenticator::Patches
         # G2FA not enabled - sign in normally
         else
           # clear any previous temporary keys
-          session[:gauth_tmp_id] = nil
+          session[:gauth_tmp] = nil
 
           set_flash_message(:notice, :signed_in) if is_navigational_format?
           sign_in(resource_name, resource)
