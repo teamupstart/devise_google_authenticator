@@ -8,7 +8,7 @@ class Devise::DisplayqrController < DeviseController
       render :show
     else
       sign_in scope, resource, :bypass => true
-      redirect_to stored_location_for(scope) || :root
+      redirect_to after_sign_in_path_for(scope) || :root
     end
   end
   
@@ -17,7 +17,7 @@ class Devise::DisplayqrController < DeviseController
     if resource.set_gauth_enabled(params[resource_name])
       set_flash_message :notice, "Status Updated!"
       sign_in scope, resource, :bypass => true
-      redirect_to stored_location_for(scope) || :root
+      redirect_to after_sign_in_path_for(scope) || :root
     else
       render :show
     end
