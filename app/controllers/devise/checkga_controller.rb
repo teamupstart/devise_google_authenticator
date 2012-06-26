@@ -22,7 +22,7 @@ class Devise::CheckgaController < Devise::SessionsController
         respond_with resource, :location => after_sign_in_path_for(resource)
       else
         set_flash_message(:notice, :invalid_code)
-        redirect_to send("#{resource_name}_checkga_path".to_sym)
+        redirect_to send("#{resource_name}_checkga_path".to_sym, resource_name => {:tmpid => params[:tmpid]})
       end
 
     else
