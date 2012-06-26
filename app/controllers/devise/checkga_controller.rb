@@ -21,7 +21,8 @@ class Devise::CheckgaController < Devise::SessionsController
         sign_in(resource_name,resource)
         respond_with resource, :location => after_sign_in_path_for(resource)
       else
-        redirect_to after_sign_in_path_for(resource)
+        set_flash_message(:notice, :invalid_code)
+        redirect_to send("#{resource_name}_checkga".to_sym)
       end
 
     else
