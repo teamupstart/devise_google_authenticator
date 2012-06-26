@@ -21,7 +21,7 @@ class Devise::CheckgaController < Devise::SessionsController
         sign_in(resource_name,resource)
         respond_with resource, :location => after_sign_in_path_for(resource)
       else
-        redirect_to :root
+        redirect_to after_sign_in_path_for(resource)
       end
 
     else
