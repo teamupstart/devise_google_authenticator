@@ -25,9 +25,6 @@ module DeviseGoogleAuthenticator::Patches
           # Assign a temporary key and fetch it
           session[:gauth_tmp] = resource.assign_gauth_tmp
 
-          ap "SESSION"
-          ap session.inspect
-
           # Redirect to GA controller to request the token
           respond_with resource, :location => send("#{scope}_checkga_url")
 
