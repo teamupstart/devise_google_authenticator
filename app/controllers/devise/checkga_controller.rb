@@ -25,7 +25,7 @@ class Devise::CheckgaController < Devise::SessionsController
     # Sign in using Gauth token
     if resource.validate_token(token.to_i)
       remember_me(resource) if params[:remember_me]
-      session[:gauth_tmp_id] = nil
+      session[:gauth_tmp] = nil
 
       set_flash_message(:notice, :signed_in) if is_navigational_format?
       sign_in(resource_name, resource)

@@ -19,6 +19,7 @@ This is a devise[https://github.com/plataformatec/devise] extension to allow you
 * Version 0.3 - first working version! With working generators, tests, and doesnt require changes to Devise's Sign In view
 * Version 0.3.1 - Slight updated in the dependencies.
 * Version 0.3.2 - Updated to include support for Devise 2.0.0 and above (no longer supports 1.5.3 or lower), you'll need version 0.3.1 to use older Devise
+* Version 0.3.3 - Fix security issue where incorrect session key was cleared after sign in.
 
 == Installation
 
